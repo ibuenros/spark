@@ -196,7 +196,7 @@ class ReceiverTracker(ssc: StreamingContext) extends Logging {
     }
   }
 
-  /** This thread class runs all the receivers on the cluster.  */
+  /** This thread class Jobs all the receivers on the cluster.  */
   class ReceiverLauncher {
     @transient val env = ssc.env
     @transient val thread  = new Thread() {
@@ -259,10 +259,11 @@ class ReceiverTracker(ssc: StreamingContext) extends Logging {
           throw new SparkException(
             "Could not start receiver as object not found.")
         }
+        //iterator.next().start()
         val receiver = iterator.next()
         val executor = new ReceiverSupervisorImpl(receiver, SparkEnv.get)
         executor.start()
-        executor.awaitTermination()
+        //executor.awaitTermination()
       }
       // Run the dummy Spark job to ensure that all slaves have registered.
       // This avoids all the receivers to be scheduled on the same node.
