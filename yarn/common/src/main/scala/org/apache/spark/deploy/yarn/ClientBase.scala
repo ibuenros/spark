@@ -381,7 +381,7 @@ trait ClientBase extends Logging {
 object ClientBase {
   val SPARK_JAR: String = "__spark__.jar"
   val APP_JAR: String = "__app__.jar"
-  val LOG4J_PROP: String = "log4j.properties"
+  val LOG4J_PROP: String = "spark.log4j.properties"
   val LOG4J_CONF_ENV_KEY: String = "SPARK_LOG4J_CONF"
   val LOCAL_SCHEME = "local"
   val CONF_SPARK_YARN_SECONDARY_JARS = "spark.yarn.secondary.jars"
