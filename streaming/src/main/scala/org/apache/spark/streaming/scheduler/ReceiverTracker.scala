@@ -262,7 +262,7 @@ class ReceiverTracker(ssc: StreamingContext) extends Logging {
         val receiver = iterator.next()
         val executor = new ReceiverSupervisorImpl(receiver, SparkEnv.get)
         executor.start()
-        //executor.awaitTermination()
+        executor.awaitTermination()
       }
       // Run the dummy Spark job to ensure that all slaves have registered.
       // This avoids all the receivers to be scheduled on the same node.
