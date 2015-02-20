@@ -73,6 +73,7 @@ private[streaming] class BlockGenerator(
     blockIntervalTimer.start()
     blockPushingThread.start()
     logInfo("Started BlockGenerator")
+    logInfo("Throttling consumer to " + throttlingBatchSize + " messages/second")
   }
 
   /** Stop all threads. */

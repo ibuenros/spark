@@ -24,15 +24,17 @@ import scala.xml.Node
 
 import org.apache.spark.ui.{WebUIPage, UIUtils}
 import org.apache.spark.util.{Utils, Distribution}
+import org.apache.spark.Logging
 
 /** Page showing statistics and task list for a given stage */
-private[ui] class StagePage(parent: JobProgressTab) extends WebUIPage("stage") {
+private[ui] class StagePage(parent: JobProgressTab) extends WebUIPage("stage") with Logging {
   private val appName = parent.appName
   private val basePath = parent.basePath
   private val listener = parent.listener
 
   def render(request: HttpServletRequest): Seq[Node] = {
     listener.synchronized {
+      logInfo("Parameters: %s".format(request.getParameterMap.toString))
       val stageId = request.getParameter("id").toInt
 
       if (!listener.stageIdToTaskData.contains(stageId)) {

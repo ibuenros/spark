@@ -122,6 +122,7 @@ private[yarn] class YarnAllocationHandler(
     val allocateResponse = amClient.allocate(progressIndicator)
 
     val allocatedContainers = allocateResponse.getAllocatedContainers()
+
     if (allocatedContainers.size > 0) {
       var numPendingAllocateNow = numPendingAllocate.addAndGet(-1 * allocatedContainers.size)
 

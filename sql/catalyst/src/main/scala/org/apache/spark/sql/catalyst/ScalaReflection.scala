@@ -24,6 +24,10 @@ import org.apache.spark.sql.catalyst.expressions.AttributeReference
 import org.apache.spark.sql.catalyst.plans.logical.LocalRelation
 import org.apache.spark.sql.catalyst.types._
 
+trait Schema {
+   def dataType(): DataType
+}
+
 /**
  * Provides experimental support for generating catalyst schemas for scala objects.
  */
@@ -41,6 +45,12 @@ object ScalaReflection {
 
   /** Returns a catalyst DataType for the given Scala Type using reflection. */
   def schemaFor(tpe: `Type`): DataType = tpe match {
+    case t if t <:< typeOf[Schema] =>
+      val m = runtimeMirror(getClass.getClassLoader)
+      val mc = m.reflectClass(t.typeSymbol.asClass)
+      val ctor = t.declaration(nme.CONSTRUCTOR).asMethod
+      val ctorm = mc.reflectConstructor(ctor)
+      ctorm().asInstanceOf[Schema].dataType()
     case t if t <:< typeOf[Option[_]] =>
       val TypeRef(_, _, Seq(optType)) = t
       schemaFor(optType)

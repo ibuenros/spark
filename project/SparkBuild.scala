@@ -214,6 +214,7 @@ object SparkBuild extends Build {
       // "sonatype-snapshots"   at "https://oss.sonatype.org/content/repositories/snapshots",
       // "sonatype-staging"     at "https://oss.sonatype.org/service/local/staging/deploy/maven2/",
       // also check the local Maven repository ~/.m2
+      "snapshots" at "http://nexus.ooyala.com/nexus/content/repositories/snapshots/",
       Resolver.mavenLocal
     ),
 
@@ -254,6 +255,14 @@ object SparkBuild extends Build {
         <url>https://issues.apache.org/jira/browse/SPARK</url>
       </issueManagement>
     ),
+
+    publishTo <<= (version) { version: String =>
+      val nexus = "http://nexus.ooyala.com/nexus/content/repositories/"
+      if (version.trim.endsWith("SNAPSHOT")) Some("snapshots" at nexus + "snapshots/")
+      else                                   Some("releases" at nexus + "releases/")
+    },
+
+    credentials += Credentials(Path.userHome / ".ivy2" / ".credentials"),
 
     /*
     publishTo <<= version { (v: String) =>
